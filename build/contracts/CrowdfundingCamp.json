@@ -7443,12 +7443,12 @@
     "1723272364946": {
       "events": {},
       "links": {},
-      "address": "0x93965d64770fd23786b89fa29E2f8AD24df54ab7",
-      "transactionHash": "0xc4d31a8b369ffd119e47c59051ec362c45f7fca473365c9032a57cbdfddb63ca"
+      "address": "0xe0f21A03bC9dA173F77d5b49Fc3220936a3A6249",
+      "transactionHash": "0xe873a01952717db2ae153f1557db8037d30f0fe3d2513976da7f9f6048687795"
     }
   },
   "schemaVersion": "3.4.16",
-  "updatedAt": "2024-08-10T06:49:48.847Z",
+  "updatedAt": "2024-08-10T06:59:37.781Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",
