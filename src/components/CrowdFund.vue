@@ -42,7 +42,7 @@
 
 <script>
 import Web3 from "web3";
-import contract from "@truffle/contract";
+import contract from "truffle-contract";
 import crowd from '../../build/contracts/CrowdfundingCamp.json';
 
 export default {

@@ -1,10 +1,10 @@
 <template>
   <div id="app">
-    <Header
+    <!-- <Header
       :numCorrect="numCorrect"
       :numTotal="numTotal"
     />
-    <!-- <b-container class="bv-example-row">
+    <b-container class="bv-example-row">
       <b-row>
         <b-col sm="12" offset-sm="0" md="8" offset-md="2" lg="6" offset-lg="3">
           <QuestionBox
@@ -22,14 +22,14 @@
 </template>
 
 <script>
-import Header from './components/Header.vue'
+// import Header from './components/Header.vue'
 // import QuestionBox from './components/QuestionBox.vue'
 import CrowdFund from './components/CrowdFund.vue'
 
 export default {
   name: 'app',
   components: {
-    Header,
+    // Header,
     // QuestionBox,
     CrowdFund,
   },
@@ -55,15 +55,15 @@ export default {
     }
   },
   mounted() {
-    fetch("https://opentdb.com/api.php?amount=10&category=27&difficulty=hard&type=multiple", {
-      method: 'GET'
-    })
-      .then((response) => {
-        return response.json()
-      })
-      .then((jsonData) => {
-        this.questions = jsonData.results
-      })
+    // fetch("https://opentdb.com/api.php?amount=10&category=27&difficulty=hard&type=multiple", {
+    //   method: 'GET'
+    // })
+    //   .then((response) => {
+    //     return response.json()
+    //   })
+    //   .then((jsonData) => {
+    //     this.questions = jsonData.results
+    //   })
   }
 }
 </script>
