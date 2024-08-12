@@ -48,8 +48,8 @@ async function startServer() {
     };
   });
 
-  router.post('/api/get-history', async (ctx) => {
-    const { crowdId } = ctx.request.body;
+  router.get('/api/get-history', async (ctx) => {
+    const crowdId = ctx.query.crowdId;
 
     // 确保请求体中包含所需的字段
     if (!crowdId) {

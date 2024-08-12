@@ -49,20 +49,16 @@
 <script>
 import Web3 from "web3";
 import contract from "truffle-contract";
-// import contract from "@truffle/contract";
 import crowd from '../../build/contracts/CrowdfundingCamp.json';
-// const contract = require("@truffle/contract");
-
-// console.log('contract', contract)
 
 export default {
   name: 'CrowdFund',
   data() {
     return {
-      price: null,
+      price: 0,
       total: 0,
       closed: true,
-      joinPrice: null,
+      joinPrice: 0,
       joined: false,
       endDate: "null",
       isAuthor: true,
@@ -72,15 +68,19 @@ export default {
 
   // 当前Vue组件被创建时回调的hook 函数
   async created() {
-    // 初始化web3及账号
-    await this.initWeb3Account()
-    // 初始化合约实例
-    await this.initContract()
-    // 获取合约的状态信息
-    await this.getCrowdInfo()
+    try {
+      // 初始化web3及账号
+      await this.initWeb3Account()
+      // 初始化合约实例
+      await this.initContract()
+      // 获取合约的状态信息
+      await this.getCrowdInfo()
 
-    // 获取后端的数据
-    this.getJoins()
+      // 获取后端的数据
+      this.getJoins()
+    } catch(e) {
+      console.error('created e', e)
+    }
   },
 
   methods: {
@@ -137,12 +137,26 @@ export default {
       }
     },
 
+    getPrice(c) {
+      // console.log('c', c);
+      const BN = this.web3.utils.BN;
+      const b = this.web3.utils.isBN(c) ? c : new BN(c);
+      return this.web3.utils.fromWei(b, 'ether')
+    },
+
+    setPrice(c) {
+      const BN = this.web3.utils.BN;
+      const b = this.web3.utils.isBN(c) ? c : new BN(c);
+      return this.web3.utils.toWei(b, 'ether')
+    },
+
     // 获取合约的状态信息
     async getCrowdInfo() {
       // 获取合约的余额
       this.web3.eth.getBalance(this.crowdFund.address).then(
         r => {
-          this.total = this.web3.utils.fromWei(r)
+          this.total = this.getPrice(r) || 0
+          console.log('r222', r, this.total);
         }
       );
       // 获取读者的参与金额， joined 在合约中是public 的状态变量，自动生成相应的访问器函数
@@ -150,7 +164,8 @@ export default {
         r => {
           if (r > 0) {
             this.joined = true
-            this.joinPrice = this.web3.utils.fromWei(r)
+            this.joinPrice = this.getPrice(r) || 0
+            console.log('r111', r, this.joinPrice);
           }
         }
       );
@@ -160,7 +175,10 @@ export default {
       );
       // 获取当前的众筹价格
       this.crowdFund.price().then(
-        r => this.price = this.web3.utils.fromWei(r)
+        r => {
+          this.price = this.getPrice(r) || 0
+          console.log('r333', r, this.price);
+        }
       );
       // 获取众筹截止时间
       this.crowdFund.endTime().then(r => {
@@ -183,7 +201,7 @@ export default {
       this.web3.eth.sendTransaction({
         from: this.account,
         to: this.crowdFund.address,
-        value: this.web3.utils.toWei(this.price)
+        value: this.setPrice(this.price)
       }).then(() =>
         this.getCrowdInfo()
       );
@@ -211,12 +229,19 @@ export default {
 
     // 获取众筹列表
     getJoins() {
-      fetch.get('http://localhost:4000/api/get-history')
+      const crowdId = 1;
+      fetch(`http://localhost:4000/api/get-history?crowdId=${crowdId}`)
+        .then(res => {
+          if (!res.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return res.json();
+        })
         .then(res => {
           console.log('res', res)
           this.joinList = res.data
         })
-        .catch(function (error) { // Ajax请求失败处理
+        .catch((error) => {
           console.log(error);
         });
     },
