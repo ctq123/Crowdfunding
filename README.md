@@ -126,3 +126,10 @@ yarn
 node index.js
 ```
 
+
+
+
+## 常见问题
+
+#### 1.程序中调用deployed()部署合约，报错Error: CrowdfundingCamp has not been deployed to detected network (network/artifact mismatch)
+

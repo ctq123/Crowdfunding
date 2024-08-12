@@ -49,7 +49,11 @@
 <script>
 import Web3 from "web3";
 import contract from "truffle-contract";
+// import contract from "@truffle/contract";
 import crowd from '../../build/contracts/CrowdfundingCamp.json';
+// const contract = require("@truffle/contract");
+
+// console.log('contract', contract)
 
 export default {
   name: 'CrowdFund',
@@ -83,29 +87,54 @@ export default {
 
     // 初始化 web3及账号
     async initWeb3Account() {
+      console.log("initWeb3Account", window.ethereum);
       if (window.ethereum) {
         this.provider = window.ethereum;
         try {
-          await window.ethereum.enable();
+          this.web3 = new Web3(this.provider);
+          console.log('web3', this.web3);
+          // await window.ethereum.enable();
+          const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+          console.log('accounts', accounts);
+          this.account = accounts[0];
         } catch (error) {
           //   console.log("User denied account access");
         }
       } else if (window.web3) {
         this.provider = window.web3.currentProvider;
+        this.web3 = new Web3(this.provider);
+        try {
+          const accounts = await this.web3.eth.getAccounts();
+          this.account = accounts[0]
+        } catch (error) {
+          console.error('error', error);
+        }
       } else {
-        this.provider = new Web3.providers.HttpProvider("http://127.0.0.1:7545");
+        this.provider = new Web3.providers.HttpProvider("http://127.0.0.1:8545");
+        this.web3 = new Web3(this.provider);
+        console.log('web3', this.web3);
+        // await window.ethereum.enable();
+        try {
+          const accounts = await this.web3.eth.getAccounts();
+          console.log("accounts", accounts);
+          this.account = accounts[0]
+        } catch (error) {
+          console.error('error111', error);
+        }
       }
-      this.web3 = new Web3(this.provider);
-      this.web3.eth.getAccounts().then(accs  => {
-        this.account = accs[0]
-      });
     },
 
     // 初始化合约实例
     async initContract() {
       const crowdContract = contract(crowd);
       crowdContract.setProvider(this.provider);
-      this.crowdFund = await crowdContract.deployed();
+      // console.log('crowdContract', crowdContract)
+      try {
+        this.crowdFund = await crowdContract.deployed();
+        console.log("Contract deployed at:", this.crowdFund);
+      } catch (error) {
+        console.error("Error1111:", error);
+      }
     },
 
     // 获取合约的状态信息

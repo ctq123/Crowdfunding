@@ -8,13 +8,14 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@truffle/contract": "4.3.5",
     "bootstrap": "^4.4.1",
     "bootstrap-vue": "^2.1.0",
     "core-js": "^3.4.4",
     "lodash": "^4.17.15",
-    "truffle-contract": "^3.0.4",
+    "truffle-contract": "3.0.4",
     "vue": "^2.6.10",
-    "web3": "^0.20.0"
+    "web3": "^1.2.11"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.1.0",
