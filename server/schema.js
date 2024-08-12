@@ -19,7 +19,8 @@ const typeDefs = gql`
 
   type Query {
     users: [User],
-    historys: [History]
+    historys: [History],
+    getHistories: [History]
   }
 
   type Mutation {

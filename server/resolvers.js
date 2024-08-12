@@ -5,6 +5,9 @@ const resolvers = {
   Query: {
     users: async () => await User.findAll(),
     historys: async () => await History.findAll(),
+    getHistories: async (_, __, { models }) => {
+      return await models.History.findAll();
+    },
   },
   Mutation: {
     createUser: async (_, { username, email }) => {

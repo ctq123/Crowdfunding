@@ -5,6 +5,7 @@ const { ApolloServer } = require('apollo-server-koa');
 const { typeDefs } = require('./schema');
 const { resolvers } = require('./resolvers');
 const { sequelize, User, History } = require('./db');
+// const { setListener } = require('./web3')
 
 // 创建 Koa 应用实例
 const app = new Koa();
@@ -64,6 +65,7 @@ async function startServer() {
     try {
       // 使用 GraphQL Mutation 创建用户
       const history = await History.findAll({ 
+        attributes: ['address', 'price', 'createdAt'], // 仅返回这几个字段
         where: {
           crowdId: crowdId, // 查询条件
         }, 
@@ -135,3 +137,5 @@ async function startServer() {
 
 // 启动服务器
 startServer();
+
+// setListener();

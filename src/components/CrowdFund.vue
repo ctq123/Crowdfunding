@@ -33,7 +33,7 @@
   <!--  如果是创作者，显示 -->
   <div class="box" v-if="isAuthor">
     <div >
-      <p v-bind:key="item" v-for="item in joinList" >
+      <p :key="i" v-for="(item, i) in joinList" >
         <label> 地址：{{ item.address.substring(0, 30) + "..."  }}</label>
         金额：<b> {{ item.price }} </b>
       </p>
@@ -182,17 +182,23 @@ export default {
       );
       // 获取众筹截止时间
       this.crowdFund.endTime().then(r => {
-        var endTime = new Date(r * 1000)
+        const futureDate = new Date();
+        futureDate.setDate(new Date().getDate() + 3);
+        let endTime = r ? new Date(r * 1000) : new Date(futureDate);
         // 把时间戳转化为本地时间
         this.endDate = endTime.toLocaleDateString().replace(/\//g, "-") + " " + endTime.toTimeString().substr(0, 8);
       });
+      console.log('this.crowdFund', this.crowdFund)
       // 获取众筹创作者地址
+      // const author = await this.crowdFund.author();
+      // console.log('author', author)
       this.crowdFund.author().then(r => {
-        if (this.account == r) {
-          this.isAuthor = true
-        } else {
-          this.isAuthor = false
-        }
+        console.log('this.account', this.account, r)
+        // if (this.account == r) {
+        //   this.isAuthor = true
+        // } else {
+        //   this.isAuthor = false
+        // }
       });
     },
 
