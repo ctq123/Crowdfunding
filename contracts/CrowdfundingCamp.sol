@@ -13,6 +13,10 @@ contract CrowdfundingCamp {
     uint public price = 0.02 ether;
     // 作者提取资金之后，关闭众筹
     bool public closed = false;
+
+    // address[] joinAccouts;
+    event Join(address indexed user, uint price);
+
     // 部署合约时调用，初始化作者及众筹结束时间
     constructor() {
         author = msg.sender;
@@ -23,6 +27,7 @@ contract CrowdfundingCamp {
         uint rise = address(this).balance / 1 ether * 0.002 ether;
         price = 0.02 ether + rise;
     }
+
     // 用户向合约转账时，触发的回调函数
     receive() external payable {
         // 众筹已结束
@@ -33,6 +38,8 @@ contract CrowdfundingCamp {
         require(msg.value >= price, "The bid is too low");
         joined[msg.sender] = msg.value;
         updatePrice();
+
+        emit Join(msg.sender, msg.value);
     }
     // 作者提取资金
     function withdrawFund() external {

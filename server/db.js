@@ -26,7 +26,38 @@ const User = sequelize.define('User', {
   timestamps: true,
 });
 
+const History = sequelize.define('History', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+  },
+  address: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  price: {
+    type: DataTypes.FLOAT,
+    allowNull: false,
+  },
+  tx: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  blockNo: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  crowdId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+}, {
+  timestamps: true,
+});
+
 module.exports = {
   sequelize,
   User,
+  History,
 };

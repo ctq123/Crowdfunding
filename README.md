@@ -40,6 +40,25 @@ npm install -g ganache-cli@6.14.13
 ```
 > node版本说明
 > node@16.14.0
+```
+nvm use 16.14.0
+```
+
+若安装后，ganache-cli没生效，需要刷新下bash_profile
+```
+source ~/.bash_profile
+```
+
+若安装后，ganache-cli启动后，无法连接到truffle，需要修改truffle-config.js
+```
+networks: {
+  development: {
+    host: "127.0.0.1",     // Localhost (default: none)
+    port: 8545,            // Standard Ethereum port (default: none)
+    network_id: "*",       // Any network (default: none)
+  },
+}
+```
 
 #### 编译
 ```
@@ -96,10 +115,14 @@ CREATE DATABASE database_name;
 SHOW DATABASES;
 ```
 
+### 安装
+```
+yarn
+```
 
 #### 运行
 ```js
 // 启动服务
-yarn index.js
+node index.js
 ```
 

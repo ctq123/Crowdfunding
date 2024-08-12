@@ -32,6 +32,12 @@
 
   <!--  如果是创作者，显示 -->
   <div class="box" v-if="isAuthor">
+    <div >
+      <p v-bind:key="item" v-for="item in joinList" >
+        <label> 地址：{{ item.address.substring(0, 30) + "..."  }}</label>
+        金额：<b> {{ item.price }} </b>
+      </p>
+    </div>
 
     <button :disabled="closed" @click="withdrawFund"> 提取资金</button>
   </div>
@@ -56,6 +62,7 @@ export default {
       joined: false,
       endDate: "null",
       isAuthor: true,
+      joinList: [],
     };
   },
 
@@ -67,6 +74,9 @@ export default {
     await this.initContract()
     // 获取合约的状态信息
     await this.getCrowdInfo()
+
+    // 获取后端的数据
+    this.getJoins()
   },
 
   methods: {
@@ -168,6 +178,18 @@ export default {
       }).then(() => {
         this.getCrowdInfo()
       })
+    },
+
+    // 获取众筹列表
+    getJoins() {
+      fetch.get('http://localhost:4000/api/get-history')
+        .then(res => {
+          console.log('res', res)
+          this.joinList = res.data
+        })
+        .catch(function (error) { // Ajax请求失败处理
+          console.log(error);
+        });
     },
 
   }
